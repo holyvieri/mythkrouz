@@ -1,12 +1,13 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.Universe;
+import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UniverseService {
-    public Universe createUniverse() throws Exception;
+    public Universe createUniverse() throws EntityAlreadyExistsException;
     public Optional<Universe> getUniverseById(Long id);
     public Universe updateUniverse(Universe universe);
     public void deleteUniverse(Long id);

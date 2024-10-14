@@ -1,12 +1,13 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.Character;
+import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CharacterService {
-    public Character createCharacter(Character character) throws Exception;
+    public Character createCharacter(Character character) throws EntityAlreadyExistsException;
     public Character updateCharacter(Character character);
     public void deleteCharacter(Character character);
     public Optional<Character> getCharacterById(Long id);

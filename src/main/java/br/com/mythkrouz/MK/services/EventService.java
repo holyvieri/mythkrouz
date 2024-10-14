@@ -1,13 +1,14 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.Event;
+import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 public interface EventService {
-    public Event createEvent(Event event) throws Exception;
+    public Event createEvent(Event event) throws EntityAlreadyExistsException;
     public Event updateEvent(Event event);
     public void deleteEvent(Event event);
     public List<Event> getAllEvents();

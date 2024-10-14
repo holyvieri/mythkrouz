@@ -1,12 +1,13 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.Territory;
+import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface TerritoryService {
-    public Territory createTerritory(Territory territory) throws Exception;
+    public Territory createTerritory(Territory territory) throws EntityAlreadyExistsException;
     public Territory updateTerritory(Territory territory);
     public void deleteTerritory(Long id);
     public Optional<Territory> getTerritoryById(Long id);

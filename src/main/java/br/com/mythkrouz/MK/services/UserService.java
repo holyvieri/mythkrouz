@@ -1,13 +1,14 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.User;
+import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
 
-    public User createUser(User user) throws Exception;
+    public User createUser(User user) throws EntityAlreadyExistsException;
     public User updateUser(User user);
     public void deleteUser(User user);
     public void deleteUser(Long id);
