@@ -38,9 +38,9 @@ public class Character {
     @OneToMany(mappedBy = "character1")
     private List<Relation> relations;
 
-
-
-
+    @ManyToOne
+    @JoinColumn(name = "universe_id", nullable = false)
+    private Universe universe;
 
 
 }
