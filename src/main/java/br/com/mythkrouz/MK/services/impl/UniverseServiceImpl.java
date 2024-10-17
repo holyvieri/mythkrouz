@@ -29,7 +29,7 @@ public class UniverseServiceImpl implements UniverseService {
             throw new IllegalArgumentException("O nome do Universo não pode ser nulo ou vazio.");
         }
 
-        Optional<Universe> existingUniverse = universeRepository.findById(universe.getUniverseId());
+        Optional<Universe> existingUniverse = universeRepository.findUniverseByName(universe.getName());
         if (existingUniverse.isPresent()) {
             throw new EntityAlreadyExistsException("Universo");
         }

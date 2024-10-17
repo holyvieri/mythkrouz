@@ -63,7 +63,6 @@ public class RelationServiceImpl implements RelationService {
     @Override
     public void deleteRelation(Long relationId) {
         relationRepository.deleteById(relationId);
-
     }
 
     @Override
