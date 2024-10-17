@@ -2,6 +2,7 @@ package br.com.mythkrouz.MK.services.impl;
 
 import br.com.mythkrouz.MK.entities.Character;
 import br.com.mythkrouz.MK.entities.Universe;
+import br.com.mythkrouz.MK.entities.dtos.CharacterDTO;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.repositories.CharacterRepository;
 import br.com.mythkrouz.MK.repositories.UniverseRepository;
@@ -75,6 +76,17 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<Character> getAllCharacters() {
+        List<Character> existingCharacters = characterRepository.findAll();
+        if (existingCharacters.isEmpty() || existingCharacters == null) {
+            throw new EntityNotFoundException("Personagem não existente.");
+        }
+
+        //List<CharacterDTO> characters = //TODO: DTOS
+
+        for (Character character : existingCharacters) {
+            CharacterDTO characterDTO = new CharacterDTO(character);
+        }
+
         return characterRepository.findAll();
     }
 
