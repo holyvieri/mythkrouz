@@ -1,8 +1,10 @@
 package br.com.mythkrouz.MK.services.impl;
 
 import br.com.mythkrouz.MK.entities.Character;
+import br.com.mythkrouz.MK.entities.Universe;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.repositories.CharacterRepository;
+import br.com.mythkrouz.MK.repositories.UniverseRepository;
 import br.com.mythkrouz.MK.services.CharacterService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -16,17 +18,24 @@ import java.util.Optional;
 public class CharacterServiceImpl implements CharacterService {
 
     private final CharacterRepository characterRepository;
+//    private UniverseRepository universeRepository;
 
     //TODO seria bom dps mover essas validações para o bean validation (javax.validation) p n poluir o service
 
     @Autowired
     public CharacterServiceImpl(CharacterRepository characterRepository) {
         this.characterRepository = characterRepository;
+//        this.universeRepository = universeRepository;
     }
 
     @Override
     @Transactional
     public Character createCharacter(Character character) throws EntityAlreadyExistsException {
+
+//        Universe universe = character.getUniverse();
+//        if (universe != null && universe.getUniverseId() == null) {
+//            universeRepository.save(universe);
+//        }
 
         // o trim vai retirar espaço em branco do inicio e do fim da string
         if (character.getName() == null || character.getName().trim().isEmpty()) {
