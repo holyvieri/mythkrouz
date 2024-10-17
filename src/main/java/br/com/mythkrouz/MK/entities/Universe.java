@@ -18,7 +18,7 @@ public class Universe {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long universeId;
 
     @Column(nullable = false)
     private String name;

@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ItemService {
     public Item createItem(Item item) throws EntityAlreadyExistsException;
     public Item updateItem(Item item);
-    public void deleteItem(Long id);
-    public Optional<Item> getItemById(Long id);
+    public void deleteItem(Long itemId);
+    public Optional<Item> getItemById(Long itemId);
     public List<Item> getAllItems();
     public List<Item> getItemsByType(String type);
     public List<Item> getItemsByRarity(String rarity);

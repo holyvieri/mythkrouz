@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface RelationService {
     public Relation createRelation(Relation relation) throws EntityAlreadyExistsException;
     public Relation updateRelation(Relation relation);
-    public void deleteRelation(Long id);
-    public Optional<Relation> getRelationById(Long id);
+    public void deleteRelation(Long relationId);
+    public Optional<Relation> getRelationById(Long relationId);
     public List<Relation> getAllRelations();
     public List<Relation> getRelationsByCharacterId(Long characterId);
 }

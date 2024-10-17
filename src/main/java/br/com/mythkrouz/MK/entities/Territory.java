@@ -18,7 +18,7 @@ public class Territory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long territoryId;
 
     @Column(nullable = false)
     private String name;
