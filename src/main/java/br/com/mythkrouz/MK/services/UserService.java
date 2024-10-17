@@ -10,9 +10,8 @@ public interface UserService {
 
     public User createUser(User user) throws EntityAlreadyExistsException;
     public User updateUser(User user);
-    public void deleteUser(User user);
-    public void deleteUser(Long id);
-    public Optional<User> getUserById(Long id);
+    public void deleteUser_UserId(Long userId);
+    public Optional<User> getUserById(Long userId);
     public List<User> getAllUsers();
     public Optional<User> getUserByEmail(String email);
     public Optional<User> getUserByUsername(String username);

@@ -15,7 +15,7 @@ public class Relation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long relationId;
 
     @ManyToOne
     @JoinColumn(name = "character1_id", nullable = false)

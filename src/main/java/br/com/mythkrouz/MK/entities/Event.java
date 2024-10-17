@@ -17,7 +17,7 @@ import java.util.List;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long eventId;
 
     @Column(nullable = false)
     private String name;
@@ -25,7 +25,7 @@ public class Event {
     private String description;
 
     @Column(nullable = false)
-    private LocalDate eventDate;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "universe_id", nullable = false)

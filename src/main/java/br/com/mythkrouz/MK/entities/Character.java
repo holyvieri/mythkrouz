@@ -16,7 +16,7 @@ import java.util.List;
 public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long characterId;
 
     @Column(nullable = false)
     private String name;
@@ -41,6 +41,9 @@ public class Character {
     @ManyToOne
     @JoinColumn(name = "universe_id", nullable = false)
     private Universe universe;
+
+    @ManyToMany(mappedBy = "involvedCharacters")
+    private List<Event> events;
 
 
 }

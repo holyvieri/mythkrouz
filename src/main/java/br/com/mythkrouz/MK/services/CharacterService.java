@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface CharacterService {
     public Character createCharacter(Character character) throws EntityAlreadyExistsException;
     public Character updateCharacter(Character character);
-    public void deleteCharacter(Character character);
+    public void deleteCharacter(Long id);
     public Optional<Character> getCharacterById(Long id);
     public List<Character> getAllCharacters();
     public Optional<Character> getCharacterByName(String characterName);

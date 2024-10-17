@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface TerritoryService {
     public Territory createTerritory(Territory territory) throws EntityAlreadyExistsException;
     public Territory updateTerritory(Territory territory);
-    public void deleteTerritory(Long id);
-    public Optional<Territory> getTerritoryById(Long id);
+    public void deleteTerritory(Long territoryId);
+    public Optional<Territory> getTerritoryById(Long territoryId);
     public List<Territory> getAllTerritory();
     public Optional<Territory> getTerritoryByName(String territoryName);
     public List<Territory> getTerritoriesByUniverse(Long universeId);
