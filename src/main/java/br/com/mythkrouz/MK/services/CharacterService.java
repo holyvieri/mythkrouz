@@ -19,5 +19,6 @@ public interface CharacterService {
     public List<Character> getCharactersByRaceAndGender(String race, String gender);
     public List<Character> getCharactersByClass(String characterClass);
 
+    //TODO: FALTOU CHARACTER BY TERRITORY
 
 }

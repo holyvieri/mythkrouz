@@ -13,4 +13,6 @@ public interface RelationService {
     public Optional<Relation> getRelationById(Long relationId);
     public List<Relation> getAllRelations();
     public List<Relation> getRelationsByCharacterId(Long characterId);
+
+    //TODO: ESQUECI DE FAZER O GET BY TYPE MULHEEEERRRRR
 }

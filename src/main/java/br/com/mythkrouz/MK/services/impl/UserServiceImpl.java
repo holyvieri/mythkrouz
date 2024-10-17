@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("Email não pode ser nulo ou vazio.");
         }
 
-        Optional<User> existingUser = userRepository.findById(user.getUserId());
+        Optional<User> existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser.isPresent()) {
             throw new EntityAlreadyExistsException("Usuário");
         }
