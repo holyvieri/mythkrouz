@@ -53,7 +53,12 @@ public class EventServiceImpl implements EventService {
     @Transactional
     @Override
     public void deleteEvent(Long eventId) {
-        eventRepository.deleteById(eventId);
+        Optional<Event> event = eventRepository.findById(eventId);
+        if (event.isPresent()) {
+            eventRepository.delete(event.get());
+        } else {
+            throw new EntityNotFoundException("Evento não encontrado com o ID: " + eventId);
+        }
     }
 
     @Override
