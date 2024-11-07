@@ -25,17 +25,6 @@ public class UserController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User createdUser = userService.createUser(user);
-            return ResponseEntity.ok(createdUser);
-        }catch (EntityAlreadyExistsException e){
-            return ResponseEntity.badRequest().body(null);
-        }
-    }
-
-
     @PutMapping("/")
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         try {
@@ -82,13 +71,5 @@ public class UserController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/auth")
-    public ResponseEntity<User> authenticateUser(@RequestBody Map<String, String> authRequest) {
-        String email = authRequest.get("email");
-        String password = authRequest.get("password");
-
-        Optional<User> user = userService.getUserByEmailAndPassword(email, password);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
-    }
 
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 //@NoArgsConstructor TODO: TIRAR ESSES E COLOCAR O CONSTRUTOR DE DTO
-//@AllArgsConstructor
+//@AllArgsConstructor TODO: FZR IMAGEM DO BD, TIRAR DUVIDAS ELISSON E FZR DTOS
 @Entity
 public class Character {
     @Id
