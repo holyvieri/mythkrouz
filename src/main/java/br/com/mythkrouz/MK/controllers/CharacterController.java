@@ -101,6 +101,7 @@ public class CharacterController {
         return ResponseEntity.ok(characters);
     }
 
+
     @GetMapping("/race-gender")
     public ResponseEntity<List<Character>> getCharactersByRaceAndGender(
             @RequestParam String race,

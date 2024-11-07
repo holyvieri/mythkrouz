@@ -1,5 +1,7 @@
 package br.com.mythkrouz.MK.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +34,7 @@ public class Event {
     @JoinColumn(name = "universe_id", nullable = false)
     private Universe universe;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "event_character",
@@ -39,6 +43,7 @@ public class Event {
     )
     private List<Character> involvedCharacters;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "relatedEvents")
-    private List<Territory> territories;
+    private List<Territory> territory;
 }

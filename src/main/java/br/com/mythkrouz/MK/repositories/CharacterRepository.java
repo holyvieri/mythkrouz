@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface CharacterRepository extends JpaRepository<br.com.mythkrouz.MK.entities.Character, Long> {
-    List<Character> findByUniverse_UniverseId(Long universeId);
+    public List<Character> findByUniverse_UniverseId(Long universeId);
     public Optional<Character> findByName(String name);
     public List<Character> findAllByRace(String race);
     public List<Character> findAllByGender(String gender);

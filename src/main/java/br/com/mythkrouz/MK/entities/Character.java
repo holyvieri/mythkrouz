@@ -10,8 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+//@NoArgsConstructor TODO: TIRAR ESSES E COLOCAR O CONSTRUTOR DE DTO
+//@AllArgsConstructor
 @Entity
 public class Character {
     @Id
@@ -41,6 +41,7 @@ public class Character {
     @ManyToOne
     @JoinColumn(name = "universe_id", nullable = false)
     private Universe universe;
+
 
     @ManyToMany(mappedBy = "involvedCharacters")
     private List<Event> events;

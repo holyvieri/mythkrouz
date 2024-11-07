@@ -31,7 +31,7 @@ public class UserController {
             User createdUser = userService.createUser(user);
             return ResponseEntity.ok(createdUser);
         }catch (EntityAlreadyExistsException e){
-            return ResponseEntity.badRequest().body(user);
+            return ResponseEntity.badRequest().body(null);
         }
     }
 

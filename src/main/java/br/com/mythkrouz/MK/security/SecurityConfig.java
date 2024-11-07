@@ -1,4 +1,4 @@
-package br.com.mythkrouz.MK.config;
+package br.com.mythkrouz.MK.security;
 
 
 import org.springframework.context.annotation.Bean;
