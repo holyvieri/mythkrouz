@@ -30,20 +30,6 @@ public class Event {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne
-    @JoinColumn(name = "universe_id", nullable = false)
-    private Universe universe;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-            name = "event_character",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "character_id")
-    )
-    private List<Character> involvedCharacters;
-
-    @JsonIgnore
     @ManyToMany(mappedBy = "relatedEvents")
     private List<Territory> territory;
 }

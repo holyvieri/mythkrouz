@@ -1,10 +1,14 @@
 package br.com.mythkrouz.MK.entities;
 
+import br.com.mythkrouz.MK.entities.enums.Rarity;
+import br.com.mythkrouz.MK.entities.enums.Type;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,14 +24,17 @@ public class Item {
     private String name;
 
     private String description;
-    private String type;
-    private String rarity;
+
+    @Enumerated(EnumType.STRING)
+    private Type type;
+    @Enumerated(EnumType.STRING)
+    private Rarity rarity;
 
     @ManyToOne
-    @JoinColumn(name = "universe_id")
-    private Universe universe;
+    @JoinColumn(name = "territory_id")
+    private Territory origin;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    private Character owner;
+    @ManyToMany
+    @JoinColumn(name = "owners_ids")
+    private List<Character> owners;
 }

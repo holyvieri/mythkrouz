@@ -1,5 +1,6 @@
 package br.com.mythkrouz.MK.entities;
 
+import br.com.mythkrouz.MK.entities.enums.RelationType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,5 +26,6 @@ public class Relation {
     @JoinColumn(name = "character2_id", nullable = false)
     private Character character2;
 
-    private String relationType;
+    @Enumerated(EnumType.STRING)
+    private RelationType relationType;
 }

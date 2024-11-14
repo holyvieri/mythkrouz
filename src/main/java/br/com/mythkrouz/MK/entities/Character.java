@@ -1,5 +1,8 @@
 package br.com.mythkrouz.MK.entities;
 
+import br.com.mythkrouz.MK.entities.enums.CharacterClass;
+import br.com.mythkrouz.MK.entities.enums.Gender;
+import br.com.mythkrouz.MK.entities.enums.Race;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,26 +24,20 @@ public class Character {
     @Column(nullable = false)
     private String name;
 
-    private String race;
-    private String characterClass;
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Race race;
+    @Enumerated(EnumType.STRING)
+    private CharacterClass characterClass;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     private int age;
     private String description;
 
-    @ManyToMany
-    @JoinTable(
-            name = "character_item",
-            joinColumns = @JoinColumn(name = "character_id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id")
-    )
-    private List<Item> items;
-
-    @OneToMany(mappedBy = "character1")
-    private List<Relation> relations;
 
     @ManyToOne
-    @JoinColumn(name = "universe_id", nullable = false)
-    private Universe universe;
+    @JoinColumn(name = "territory_id", nullable = false)
+    private Territory territory;
 
 
     @ManyToMany(mappedBy = "involvedCharacters")

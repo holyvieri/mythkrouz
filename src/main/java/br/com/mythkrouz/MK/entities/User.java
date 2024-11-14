@@ -1,5 +1,6 @@
 package br.com.mythkrouz.MK.entities;
 
+import br.com.mythkrouz.MK.entities.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,14 +34,11 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @OneToMany(mappedBy = "creator")
-    private List<Universe> createdUniverses;
-
     private boolean isActive;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        return List.of(new SimpleGrantedAuthority(Roles.USER.getRoleName()));
     }
 
     @Override
