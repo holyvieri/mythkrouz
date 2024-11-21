@@ -10,11 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface UniverseRepository extends JpaRepository<Universe, Long> {
-    public List<Universe> findByCreator_UserId(Long creatorId);
 
-    public Optional<Universe> findUniverseByName(String name);
+    public List<Universe> findAllByCreator_UserId(Long creatorId);
+    public Optional<Universe> findByName(String name);
 
-    public Optional<Universe> findByTerritories_TerritoryId(Long territoryId);
-
-    public Optional<Universe> findByCharacters_CharacterId(Long characterId);
 }

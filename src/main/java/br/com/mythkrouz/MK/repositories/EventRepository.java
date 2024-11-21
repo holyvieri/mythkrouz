@@ -11,10 +11,8 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
-    public Optional<Event> findEventByName(String eventName);
-    List<Event> findByUniverse_UniverseId(Long universeId);
-    public List<Event> findEventsByDate(LocalDate date);
+    public Optional<Event> findByName(String eventName);
+    public List<Event> findAllByDate(LocalDate date);
     public List<Event> findAllByInvolvedCharacters_CharacterId(Long characterId);
-    @Query("SELECT e FROM Event e JOIN e.territories t WHERE t.territoryId = :territoryId")
-    public List<Event> findEventsByTerritoryId(Long territoryId);
+    public List<Event> findAllByTerritoryId(Long territoryId);
 }

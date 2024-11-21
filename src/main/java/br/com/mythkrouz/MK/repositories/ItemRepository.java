@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long> {
-    public Optional<Item> findItemByName(String name);
-    public List<Item> findByType(String type);
-    public List<Item> findByRarity(String rarity);
-    public List<Item> findByOwner_CharacterId(Long ownerId);
-    public List<Item> findByUniverse_UniverseId(Long universeId);
+    public Optional<Item> findByName(String name);
+    public List<Item> findAllByType(String type);
+    public List<Item> findAllByRarity(String rarity);
+    public List<Item> findAllByOwner_CharacterId(Long ownerId);
+    public List<Item> findAllByTerritoryId(Long territoryId);
 }
