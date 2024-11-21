@@ -1,10 +1,8 @@
 package br.com.mythkrouz.MK.services.impl;
 
 import br.com.mythkrouz.MK.entities.Character;
-import br.com.mythkrouz.MK.entities.Universe;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.repositories.CharacterRepository;
-import br.com.mythkrouz.MK.repositories.UniverseRepository;
 import br.com.mythkrouz.MK.services.CharacterService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -84,27 +82,32 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public List<Character> getCharactersByUniverseId(Long universeId) {
-        return characterRepository.findByUniverse_UniverseId(universeId);
+    public List<Character> getAllCharactersByTerritoryId(Long territoryId) {
+        return characterRepository.findAllByTerritoryId(territoryId);
     }
 
     @Override
-    public List<Character> getCharactersByRace(String race) {
+    public List<Character> getAllCharactersByEventId(Long eventId) {
+        return characterRepository.findAllByEventId(eventId);
+    }
+
+    @Override
+    public List<Character> getAllCharactersByRace(String race) {
         return characterRepository.findAllByRace(race);
     }
 
     @Override
-    public List<Character> getCharactersByGender(String gender) {
+    public List<Character> getAllCharactersByGender(String gender) {
         return characterRepository.findAllByGender(gender);
     }
 
     @Override
-    public List<Character> getCharactersByRaceAndGender(String race, String gender) {
+    public List<Character> getAllCharactersByRaceAndGender(String race, String gender) {
         return characterRepository.findAllByRaceAndGender(race, gender);
     }
 
     @Override
-    public List<Character> getCharactersByClass(String characterClass) {
+    public List<Character> getAllCharactersByClass(String characterClass) {
         return characterRepository.findAllByCharacterClass(characterClass);
     }
 }

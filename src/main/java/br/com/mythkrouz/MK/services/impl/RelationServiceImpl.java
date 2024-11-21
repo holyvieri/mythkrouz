@@ -1,6 +1,7 @@
 package br.com.mythkrouz.MK.services.impl;
 
 import br.com.mythkrouz.MK.entities.Relation;
+import br.com.mythkrouz.MK.entities.enums.RelationType;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.repositories.RelationRepository;
 import br.com.mythkrouz.MK.services.RelationService;
@@ -31,7 +32,7 @@ public class RelationServiceImpl implements RelationService {
         }
 
         //vê agr se já existe pelo menos uma relação entre c1 e c2
-        List<Relation> existingRelations = relationRepository.findByCharacter1_CharacterIdOrCharacter2_CharacterId(
+        List<Relation> existingRelations = relationRepository.findAllByCharacter1_CharacterIdOrCharacter2_CharacterId(
                 relation.getCharacter1().getCharacterId(), relation.getCharacter2().getCharacterId()
         );
 
@@ -77,6 +78,11 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public List<Relation> getAllRelationsByCharacterId(Long characterId) {
-        return relationRepository.findByCharacter1_CharacterIdOrCharacter2_CharacterId(characterId, characterId);
+        return relationRepository.findAllByCharacter1_CharacterIdOrCharacter2_CharacterId(characterId, characterId);
+    }
+
+    @Override
+    public List<Relation> getAllRelationsByRelationType(RelationType relationType) {
+        return relationRepository.findAllByRelationType(relationType);
     }
 }

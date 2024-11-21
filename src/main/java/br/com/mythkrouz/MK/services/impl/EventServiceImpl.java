@@ -31,7 +31,7 @@ public class EventServiceImpl implements EventService {
             throw new IllegalArgumentException("O nome do Evento não pode ser nulo ou vazio.");
         }
 
-        Optional<Event> existingEvent = eventRepository.findEventByName(event.getName());
+        Optional<Event> existingEvent = eventRepository.findByName(event.getName());
         if (existingEvent.isPresent()) {
             throw new EntityAlreadyExistsException("evento");
         }
@@ -73,26 +73,21 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Optional<Event> getEventByName(String eventName) {
-        return eventRepository.findEventByName(eventName);
+        return eventRepository.findByName(eventName);
     }
 
     @Override
-    public List<Event> getEventsByUniverseId(Long universeId) {
-        return eventRepository.findByUniverse_UniverseId(universeId);
+    public List<Event> getAllEventsByDate(LocalDate date) {
+        return eventRepository.findAllByDate(date);
     }
 
     @Override
-    public List<Event> getEventsByDate(LocalDate date) {
-        return eventRepository.findEventsByDate(date);
-    }
-
-    @Override
-    public List<Event> getEventsByInvolvedCharacter(Long involvedCharacterId) {
+    public List<Event> getAllEventsByInvolvedCharacter(Long involvedCharacterId) {
         return eventRepository.findAllByInvolvedCharacters_CharacterId(involvedCharacterId);
     }
 
     @Override
-    public List<Event> getEventsByTerritoryId(Long territoryId) {
-        return eventRepository.findEventsByTerritoryId(territoryId);
+    public List<Event> getAllEventsByTerritoryId(Long territoryId) {
+        return eventRepository.findAllByTerritoryId(territoryId);
     }
 }

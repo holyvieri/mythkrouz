@@ -29,7 +29,7 @@ public class UniverseServiceImpl implements UniverseService {
             throw new IllegalArgumentException("O nome do Universo não pode ser nulo ou vazio.");
         }
 
-        Optional<Universe> existingUniverse = universeRepository.findUniverseByName(universe.getName());
+        Optional<Universe> existingUniverse = universeRepository.findByName(universe.getName());
         if (existingUniverse.isPresent()) {
             throw new EntityAlreadyExistsException("Universo");
         }
@@ -67,21 +67,12 @@ public class UniverseServiceImpl implements UniverseService {
 
     @Override
     public Optional<Universe> getUniverseByName(String name) {
-        return universeRepository.findUniverseByName(name);
+        return universeRepository.findByName(name);
     }
 
     @Override
     public List<Universe> getAllUniverseByCreatorId(Long creatorId) {
-        return universeRepository.findByCreator_UserId(creatorId);
+        return universeRepository.findAllByCreator_UserId(creatorId);
     }
 
-    @Override
-    public Optional<Universe> getUniverseByTerritoryId(Long territoryId) {
-        return universeRepository.findByTerritories_TerritoryId(territoryId);
-    }
-
-    @Override
-    public Optional<Universe> getUniverseByCharacterId(Long characterId) {
-        return universeRepository.findByCharacters_CharacterId(characterId);
-    }
 }

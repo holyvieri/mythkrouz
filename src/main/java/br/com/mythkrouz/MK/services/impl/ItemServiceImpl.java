@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
             throw new IllegalArgumentException("O nome do item não pode ser nulo ou vazio.");
         }
 
-        Optional<Item> existingItem = itemRepository.findItemByName(item.getName());
+        Optional<Item> existingItem = itemRepository.findByName(item.getName());
         if (existingItem.isPresent()) {
             throw new EntityAlreadyExistsException("Item");
         }
@@ -66,21 +66,23 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getAllItemsByType(String type) {
-        return itemRepository.findByType(type);
+        return itemRepository.findAllByType(type);
     }
 
     @Override
     public List<Item> getAllItemsByRarity(String rarity) {
-        return itemRepository.findByRarity(rarity);
+        return itemRepository.findAllByRarity(rarity);
     }
 
     @Override
     public List<Item> getAllItemsByOwnerId(Long ownerId) {
-        return itemRepository.findByOwner_CharacterId(ownerId);
+        return itemRepository.findAllByOwner_CharacterId(ownerId);
     }
 
     @Override
-    public List<Item> getItemsByUniverseId(Long universeId) {
-        return itemRepository.findByUniverse_UniverseId(universeId);
+    public List<Item> getAllItemsByTerritoryId(Long territoryId) {
+        return itemRepository.findAllByTerritoryId(territoryId);
     }
+
+
 }
