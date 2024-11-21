@@ -65,7 +65,7 @@ public class RelationController {
 
     @GetMapping("/character/{characterId}")
     public ResponseEntity<List<Relation>> getRelationsByCharacterId(@PathVariable Long characterId) {
-        List<Relation> relations = relationService.getRelationsByCharacterId(characterId);
+        List<Relation> relations = relationService.getAllRelationsByCharacterId(characterId);
         return new ResponseEntity<>(relations, HttpStatus.OK);
     }
 

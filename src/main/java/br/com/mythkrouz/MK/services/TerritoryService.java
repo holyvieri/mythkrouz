@@ -13,7 +13,5 @@ public interface TerritoryService {
     public Optional<Territory> getTerritoryById(Long territoryId);
     public List<Territory> getAllTerritory();
     public Optional<Territory> getTerritoryByName(String territoryName);
-    public List<Territory> getTerritoriesByUniverse(Long universeId);
-    public List<Territory> getTerritoriesByRelatedEvents(Long eventId);
-    public List<Territory> getTerritoriesByRelatedItems(Long itemId);
+    public List<Territory> getAllTerritoriesByUniverse(Long universeId);
 }

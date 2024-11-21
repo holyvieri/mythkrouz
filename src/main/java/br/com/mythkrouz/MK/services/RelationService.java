@@ -1,6 +1,7 @@
 package br.com.mythkrouz.MK.services;
 
 import br.com.mythkrouz.MK.entities.Relation;
+import br.com.mythkrouz.MK.entities.enums.RelationType;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 
 import java.util.List;
@@ -12,7 +13,7 @@ public interface RelationService {
     public void deleteRelation(Long relationId);
     public Optional<Relation> getRelationById(Long relationId);
     public List<Relation> getAllRelations();
-    public List<Relation> getRelationsByCharacterId(Long characterId);
+    public List<Relation> getAllRelationsByCharacterId(Long characterId);
+    public List<Relation> getAllRelationsByRelationType(RelationType relationType);
 
-    //TODO: ESQUECI DE FAZER O GET BY TYPE MULHEEEERRRRR
 }

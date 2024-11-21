@@ -69,7 +69,7 @@ public class UniverseController {
 
     @GetMapping("/creator/{creatorId}")
     public ResponseEntity<List<Universe>> getUniversesByCreatorId(@PathVariable Long creatorId) {
-        List<Universe> universes = universeService.getUniverseByCreatorId(creatorId);
+        List<Universe> universes = universeService.getAllUniverseByCreatorId(creatorId);
         return ResponseEntity.ok(universes);
 
     }

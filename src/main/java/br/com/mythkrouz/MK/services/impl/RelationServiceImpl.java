@@ -76,7 +76,7 @@ public class RelationServiceImpl implements RelationService {
     }
 
     @Override
-    public List<Relation> getRelationsByCharacterId(Long characterId) {
+    public List<Relation> getAllRelationsByCharacterId(Long characterId) {
         return relationRepository.findByCharacter1_CharacterIdOrCharacter2_CharacterId(characterId, characterId);
     }
 }

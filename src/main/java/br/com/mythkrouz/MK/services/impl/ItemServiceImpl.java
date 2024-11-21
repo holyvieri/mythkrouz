@@ -65,17 +65,17 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<Item> getItemsByType(String type) {
+    public List<Item> getAllItemsByType(String type) {
         return itemRepository.findByType(type);
     }
 
     @Override
-    public List<Item> getItemsByRarity(String rarity) {
+    public List<Item> getAllItemsByRarity(String rarity) {
         return itemRepository.findByRarity(rarity);
     }
 
     @Override
-    public List<Item> getItemsByOwnerId(Long ownerId) {
+    public List<Item> getAllItemsByOwnerId(Long ownerId) {
         return itemRepository.findByOwner_CharacterId(ownerId);
     }
 

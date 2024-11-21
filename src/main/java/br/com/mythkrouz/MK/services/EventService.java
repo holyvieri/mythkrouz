@@ -14,9 +14,8 @@ public interface EventService {
     public List<Event> getAllEvents();
     public Optional<Event> getEventById(Long eventId);
     public Optional<Event> getEventByName(String eventName);
-    public List<Event> getEventsByUniverseId(Long universeId);
-    public List<Event> getEventsByDate(LocalDate date);
-    public List<Event> getEventsByInvolvedCharacter(Long involvedCharacterId);
-    public List<Event> getEventsByTerritoryId(Long territoryId);
+    public List<Event> getAllEventsByDate(LocalDate date);
+    public List<Event> getAllEventsByInvolvedCharacter(Long involvedCharacterId);
+    public List<Event> getAllEventsByTerritoryId(Long territoryId);
 
 }

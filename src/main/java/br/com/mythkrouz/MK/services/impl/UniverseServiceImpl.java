@@ -71,7 +71,7 @@ public class UniverseServiceImpl implements UniverseService {
     }
 
     @Override
-    public List<Universe> getUniverseByCreatorId(Long creatorId) {
+    public List<Universe> getAllUniverseByCreatorId(Long creatorId) {
         return universeRepository.findByCreator_UserId(creatorId);
     }
 

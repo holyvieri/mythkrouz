@@ -13,13 +13,12 @@ public interface CharacterService {
     public Optional<Character> getCharacterById(Long id);
     public List<Character> getAllCharacters();
     public Optional<Character> getCharacterByName(String characterName);
-    public List<Character> getCharactersByTerritoryId(Long territoryId);
-    public List<Character> getCharactersByEventId(Long eventId);
-    public List<Character> getCharactersByRace(String race);
-    public List<Character> getCharactersByGender(String gender);
-    public List<Character> getCharactersByRaceAndGender(String race, String gender);
-    public List<Character> getCharactersByClass(String characterClass);
+    public List<Character> getAllCharactersByTerritoryId(Long territoryId);
+    public List<Character> getAllCharactersByEventId(Long eventId);
+    public List<Character> getAllCharactersByRace(String race);
+    public List<Character> getAllCharactersByGender(String gender);
+    public List<Character> getAllCharactersByRaceAndGender(String race, String gender);
+    public List<Character> getAllCharactersByClass(String characterClass);
 
-    //TODO: FALTOU CHARACTER BY TERRITORY
 
 }

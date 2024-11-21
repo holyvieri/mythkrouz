@@ -12,8 +12,8 @@ public interface ItemService {
     public void deleteItem(Long itemId);
     public Optional<Item> getItemById(Long itemId);
     public List<Item> getAllItems();
-    public List<Item> getItemsByType(String type);
-    public List<Item> getItemsByRarity(String rarity);
-    public List<Item> getItemsByOwnerId(Long ownerId);
-    public List<Item> getItemsByUniverseId(Long universeId);
+    public List<Item> getAllItemsByType(String type);
+    public List<Item> getAllItemsByRarity(String rarity);
+    public List<Item> getAllItemsByOwnerId(Long ownerId);
+    public List<Item> getAllItemsByTerritoryId(Long territoryId);
 }

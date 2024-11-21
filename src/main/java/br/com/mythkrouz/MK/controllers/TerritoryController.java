@@ -69,7 +69,7 @@ public class TerritoryController {
 
     @GetMapping("/universe/{universeId}")
     public ResponseEntity<List<Territory>> getTerritoriesByUniverse(@PathVariable Long universeId) {
-        List<Territory> territories = territoryService.getTerritoriesByUniverse(universeId);
+        List<Territory> territories = territoryService.getAllTerritoriesByUniverse(universeId);
         return ResponseEntity.ok(territories);
     }
 

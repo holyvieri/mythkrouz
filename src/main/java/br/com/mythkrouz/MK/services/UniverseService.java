@@ -13,8 +13,6 @@ public interface UniverseService {
     public Optional<Universe> getUniverseById(Long universeId);
     public List<Universe> getAllUniverses();
     public Optional<Universe> getUniverseByName(String name);
-    public List<Universe> getUniverseByCreatorId(Long creatorId);
-    public Optional<Universe> getUniverseByTerritoryId(Long territoryId);
-    public Optional<Universe> getUniverseByCharacterId(Long characterId);
+    public List<Universe> getAllUniverseByCreatorId(Long creatorId);
 
 }

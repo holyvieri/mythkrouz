@@ -70,19 +70,19 @@ public class ItemController {
 
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Item>> getItemsByType(@PathVariable String type) {
-        List<Item> items = itemService.getItemsByType(type);
+        List<Item> items = itemService.getAllItemsByType(type);
         return ResponseEntity.ok(items);
     }
 
     @GetMapping("/rarity/{rarity}")
     public ResponseEntity<List<Item>> getItemsByRarity(@PathVariable String rarity) {
-        List<Item> items = itemService.getItemsByRarity(rarity);
+        List<Item> items = itemService.getAllItemsByRarity(rarity);
         return ResponseEntity.ok(items);
     }
 
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<List<Item>> getItemsByOwnerId(@PathVariable Long ownerId) {
-        List<Item> items = itemService.getItemsByOwnerId(ownerId);
+        List<Item> items = itemService.getAllItemsByOwnerId(ownerId);
         return ResponseEntity.ok(items);
     }
 
