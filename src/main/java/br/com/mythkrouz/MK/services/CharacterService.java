@@ -13,7 +13,8 @@ public interface CharacterService {
     public Optional<Character> getCharacterById(Long id);
     public List<Character> getAllCharacters();
     public Optional<Character> getCharacterByName(String characterName);
-    public List<Character> getCharactersByUniverseId(Long universeId);
+    public List<Character> getCharactersByTerritoryId(Long territoryId);
+    public List<Character> getCharactersByEventId(Long eventId);
     public List<Character> getCharactersByRace(String race);
     public List<Character> getCharactersByGender(String gender);
     public List<Character> getCharactersByRaceAndGender(String race, String gender);

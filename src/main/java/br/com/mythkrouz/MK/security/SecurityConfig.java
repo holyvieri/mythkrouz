@@ -1,6 +1,5 @@
 package br.com.mythkrouz.MK.security;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -35,13 +34,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(HttpMethod.POST, "api/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "api/users").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/characters").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/events").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/items").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/relations").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/territories").hasRole("ROLE_USER")
-                        .requestMatchers(HttpMethod.POST, "api/universes").hasRole("ROLE_USER")
+                        //nao precisa detalhar todos os endpoints ja q todos sao permitidos p role user
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
