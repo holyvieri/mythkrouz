@@ -1,7 +1,9 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.dto.UserDTO;
 import br.com.mythkrouz.MK.entities.User;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
+import br.com.mythkrouz.MK.mappers.UserMapper;
 import br.com.mythkrouz.MK.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,29 +48,43 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
-        //se o opt conter valor, o map vai aplicar o status ok, caso n vai jogar o not found
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        // Se o Optional conter valor, aplica o mapeamento para DTO e retorna com status OK.
+        return user
+                .map(UserMapper::toDTO) // Converte a entidade User para UserDTO
+                .map(ResponseEntity::ok) // Retorna ResponseEntity com status OK
+                .orElseGet(() -> ResponseEntity.notFound().build()); // Caso contrário, retorna NOT FOUND.
 
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
+        // Converte a lista de User em uma lista de UserDTO
+        List<UserDTO> userDTOs = users.stream()
+                .map(UserMapper::toDTO) // Aplica o mapeamento para cada User
+                .toList(); // Coleta os resultados em uma lista
+
+        return ResponseEntity.ok(userDTOs); // Retorna a lista de UserDTO com status 200 OK
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<User> getUserByEmail(@PathVariable String email) {
+    public ResponseEntity<UserDTO> getUserByEmail(@PathVariable String email) {
         Optional<User> user = userService.getUserByEmail(email);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user
+                .map(UserMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/username/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+    public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
         Optional<User> user = userService.getUserByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return user
+                .map(UserMapper::toDTO)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 

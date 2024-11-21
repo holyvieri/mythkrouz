@@ -76,12 +76,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<Item> getAllItemsByOwnerId(Long ownerId) {
-        return itemRepository.findAllByOwner_CharacterId(ownerId);
+        return itemRepository.findAllByOwners_CharacterId(ownerId);
     }
 
     @Override
     public List<Item> getAllItemsByTerritoryId(Long territoryId) {
-        return itemRepository.findAllByTerritoryId(territoryId);
+        return itemRepository.findAllByOrigin_TerritoryId(territoryId);
     }
 
 

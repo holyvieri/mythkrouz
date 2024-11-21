@@ -4,9 +4,7 @@ import br.com.mythkrouz.MK.entities.enums.CharacterClass;
 import br.com.mythkrouz.MK.entities.enums.Gender;
 import br.com.mythkrouz.MK.entities.enums.Race;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -40,7 +38,12 @@ public class Character {
     private Territory territory;
 
 
-    @ManyToMany(mappedBy = "involvedCharacters")
+    @ManyToMany
+    @JoinTable(
+            name="character_event",
+            joinColumns=@JoinColumn(name="character_id"),
+            inverseJoinColumns =@JoinColumn(name="event_id")
+    )
     private List<Event> events;
 
 

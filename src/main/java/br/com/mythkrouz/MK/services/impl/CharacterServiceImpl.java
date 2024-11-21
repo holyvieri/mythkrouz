@@ -83,12 +83,12 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<Character> getAllCharactersByTerritoryId(Long territoryId) {
-        return characterRepository.findAllByTerritoryId(territoryId);
+        return characterRepository.findAllByTerritory_TerritoryId(territoryId);
     }
 
     @Override
     public List<Character> getAllCharactersByEventId(Long eventId) {
-        return characterRepository.findAllByEventId(eventId);
+        return characterRepository.findAllByEvents_EventId(eventId);
     }
 
     @Override

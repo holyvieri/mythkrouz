@@ -86,15 +86,9 @@ public class ItemController {
         return ResponseEntity.ok(items);
     }
 
-    @GetMapping("/universe/{universeId}")
-    public ResponseEntity<List<Item>> getItemsByUniverseId(@PathVariable Long universeId) {
-        List<Item> items = itemService.getItemsByUniverseId(universeId);
+    @GetMapping("/territory/{territoryId}")
+    public ResponseEntity<List<Item>> getItemsByTerritoryId(@PathVariable Long territoryId) {
+        List<Item> items = itemService.getAllItemsByTerritoryId(territoryId);
         return ResponseEntity.ok(items);
     }
-
-
-
-
-
-
 }

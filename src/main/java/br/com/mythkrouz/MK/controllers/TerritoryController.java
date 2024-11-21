@@ -73,18 +73,5 @@ public class TerritoryController {
         return ResponseEntity.ok(territories);
     }
 
-    @GetMapping("/events/{eventId}")
-    public ResponseEntity<List<Territory>> getTerritoriesByRelatedEvents(@PathVariable Long eventId) {
-        List<Territory> territories = territoryService.getTerritoriesByRelatedEvents(eventId);
-        return ResponseEntity.ok(territories);
-    }
-
-    @GetMapping("/items/{itemId}")
-    public ResponseEntity<List<Territory>> getTerritoriesByRelatedItems(@PathVariable Long itemId) {
-        List<Territory> territories = territoryService.getTerritoriesByRelatedItems(itemId);
-        return ResponseEntity.ok(territories);
-    }
-
-    //TODO: os metodos no postman tao aparecendo tudo tipo concha dentro da concha de 5 a seco
 
 }

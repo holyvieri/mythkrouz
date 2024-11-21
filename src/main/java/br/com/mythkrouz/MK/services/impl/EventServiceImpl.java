@@ -82,12 +82,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAllEventsByInvolvedCharacter(Long involvedCharacterId) {
-        return eventRepository.findAllByInvolvedCharacters_CharacterId(involvedCharacterId);
-    }
-
-    @Override
     public List<Event> getAllEventsByTerritoryId(Long territoryId) {
-        return eventRepository.findAllByTerritoryId(territoryId);
+        return eventRepository.findAllByTerritory_TerritoryId(territoryId);
     }
 }

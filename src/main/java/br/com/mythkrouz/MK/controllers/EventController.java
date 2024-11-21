@@ -1,7 +1,9 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.entities.Character;
 import br.com.mythkrouz.MK.entities.Event;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
+import br.com.mythkrouz.MK.services.CharacterService;
 import br.com.mythkrouz.MK.services.EventService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +20,12 @@ import java.util.Optional;
 @RequestMapping("/api/events")
 public class EventController {
     private final EventService eventService;
+    private final CharacterService characterService;
 
     @Autowired
-    public EventController(EventService eventService) {
+    public EventController(EventService eventService, CharacterService characterService) {
         this.eventService = eventService;
+        this.characterService = characterService;
     }
 
     @PostMapping
@@ -76,28 +80,11 @@ public class EventController {
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/universe/{universeId}")
-    public ResponseEntity<List<Event>> getEventsByUniverseId(@PathVariable Long universeId) {
-        List<Event> events = eventService.getEventsByUniverseId(universeId);
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(events);
-    }
 
     @GetMapping("/date/{date}")
     public ResponseEntity<List<Event>> getEventsByDate(@PathVariable String date) {
         LocalDate localDate = LocalDate.parse(date);
-        List<Event> events = eventService.getEventsByDate(localDate);
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(events);
-    }
-
-    @GetMapping("/character/{characterId}")
-    public ResponseEntity<List<Event>> getEventsByInvolvedCharacter(@PathVariable Long characterId) {
-        List<Event> events = eventService.getEventsByInvolvedCharacter(characterId);
+        List<Event> events = eventService.getAllEventsByDate(localDate);
         if (events.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -106,7 +93,7 @@ public class EventController {
 
     @GetMapping("/territory/{territoryId}")
     public ResponseEntity<List<Event>> getEventsByTerritoryId(@PathVariable Long territoryId) {
-        List<Event> events = eventService.getEventsByTerritoryId(territoryId);
+        List<Event> events = eventService.getAllEventsByTerritoryId(territoryId);
         if (events.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

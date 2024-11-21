@@ -12,6 +12,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     public Optional<Item> findByName(String name);
     public List<Item> findAllByType(String type);
     public List<Item> findAllByRarity(String rarity);
-    public List<Item> findAllByOwner_CharacterId(Long ownerId);
-    public List<Item> findAllByTerritoryId(Long territoryId);
+    public List<Item> findAllByOwners_CharacterId(Long ownerId);
+    public List<Item> findAllByOrigin_TerritoryId(Long territoryId);
 }

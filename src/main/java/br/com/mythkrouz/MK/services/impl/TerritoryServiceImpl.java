@@ -70,6 +70,6 @@ public class TerritoryServiceImpl implements TerritoryService {
 
     @Override
     public List<Territory> getAllTerritoriesByUniverse(Long universeId) {
-        return territoryRepository.findAllByUniverseId(universeId);
+        return territoryRepository.findAllByUniverse_UniverseId(universeId);
     }
 }

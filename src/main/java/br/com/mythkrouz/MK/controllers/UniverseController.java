@@ -74,16 +74,5 @@ public class UniverseController {
 
     }
 
-    @GetMapping("/territory/{territoryId}")
-    public ResponseEntity<Universe> getUniversesByTerritoryId(@PathVariable Long territoryId) {
-        Optional<Universe> universe = universeService.getUniverseByTerritoryId(territoryId);
-        return universe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @GetMapping("/character/{characterId}")
-    public ResponseEntity<Universe> getUniversesByCharacterId(@PathVariable Long characterId) {
-        Optional<Universe> universe = universeService.getUniverseByCharacterId(characterId);
-        return universe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
 
 }

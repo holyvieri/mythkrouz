@@ -1,7 +1,5 @@
 package br.com.mythkrouz.MK.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +14,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +27,11 @@ public class Event {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToMany(mappedBy = "relatedEvents")
+    @ManyToMany
+    @JoinTable(
+            name = "event_territory",
+            joinColumns = @JoinColumn(name = "event_id"),
+            inverseJoinColumns = @JoinColumn(name = "territory_id")
+    )
     private List<Territory> territory;
 }

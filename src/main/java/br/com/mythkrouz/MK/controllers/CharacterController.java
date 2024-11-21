@@ -74,9 +74,9 @@ public class CharacterController {
         return ResponseEntity.ok(characters);
     }
 
-    @GetMapping("/universe/{universeId}")
-    public ResponseEntity<List<Character>> getCharactersByUniverseId(@PathVariable Long universeId) {
-        List<Character> characters = characterService.getCharactersByUniverseId(universeId);
+    @GetMapping("/territory/{territoryId}")
+    public ResponseEntity<List<Character>> getCharactersByTerritoryId(@PathVariable Long territoryId) {
+        List<Character> characters = characterService.getAllCharactersByTerritoryId(territoryId);
         if (characters.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -85,8 +85,8 @@ public class CharacterController {
 
     @GetMapping("/race/{race}")
     public ResponseEntity<List<Character>> getCharactersByRace(@PathVariable String race) {
-        List<Character> characters = characterService.getCharactersByRace(race);
-        if (characters.isEmpty()) {
+        List<Character> characters = characterService.getAllCharactersByRace(race);
+        if (characters.isEmpty()){
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(characters);
@@ -94,7 +94,7 @@ public class CharacterController {
 
     @GetMapping("/gender/{gender}")
     public ResponseEntity<List<Character>> getCharactersByGender(@PathVariable String gender) {
-        List<Character> characters = characterService.getCharactersByGender(gender);
+        List<Character> characters = characterService.getAllCharactersByGender(gender);
         if (characters.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -106,7 +106,7 @@ public class CharacterController {
     public ResponseEntity<List<Character>> getCharactersByRaceAndGender(
             @RequestParam String race,
             @RequestParam String gender) {
-        List<Character> characters = characterService.getCharactersByRaceAndGender(race, gender);
+        List<Character> characters = characterService.getAllCharactersByRaceAndGender(race, gender);
         if (characters.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -115,7 +115,16 @@ public class CharacterController {
 
     @GetMapping("/class/{characterClass}")
     public ResponseEntity<List<Character>> getCharactersByClass(@PathVariable String characterClass) {
-        List<Character> characters = characterService.getCharactersByClass(characterClass);
+        List<Character> characters = characterService.getAllCharactersByClass(characterClass);
+        if (characters.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(characters);
+    }
+
+    @GetMapping("/event/{eventId}")
+    public ResponseEntity<List<Character>> getCharactersByEventId(@PathVariable Long eventId) {
+        List<Character> characters = characterService.getAllCharactersByEventId(eventId);
         if (characters.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

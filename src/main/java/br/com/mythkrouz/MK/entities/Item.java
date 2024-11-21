@@ -35,6 +35,10 @@ public class Item {
     private Territory origin;
 
     @ManyToMany
-    @JoinColumn(name = "owners_ids")
+    @JoinTable(
+        name = "item_character",
+        joinColumns=@JoinColumn(name="item_id"),
+        inverseJoinColumns=@JoinColumn(name="character_id")
+    )
     private List<Character> owners;
 }

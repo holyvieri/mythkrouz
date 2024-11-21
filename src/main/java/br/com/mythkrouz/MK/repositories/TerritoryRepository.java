@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TerritoryRepository extends JpaRepository<Territory, Long> {
     public Optional<Territory> findByName(String territoryName);
-    public List<Territory> findAllByUniverseId(Long universeId);
+    public List<Territory> findAllByUniverse_UniverseId(Long universeId);
 }

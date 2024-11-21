@@ -2,7 +2,6 @@ package br.com.mythkrouz.MK.repositories;
 
 import br.com.mythkrouz.MK.entities.Event;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -13,6 +12,5 @@ import java.util.Optional;
 public interface EventRepository extends JpaRepository<Event, Long> {
     public Optional<Event> findByName(String eventName);
     public List<Event> findAllByDate(LocalDate date);
-    public List<Event> findAllByInvolvedCharacters_CharacterId(Long characterId);
-    public List<Event> findAllByTerritoryId(Long territoryId);
+    public List<Event> findAllByTerritory_TerritoryId(Long territoryId);
 }
