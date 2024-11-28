@@ -1,10 +1,13 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.dto.TerritoryDTO;
 import br.com.mythkrouz.MK.entities.Territory;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.services.TerritoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,9 +25,12 @@ public class TerritoryController {
     }
 
     @PostMapping
-    public ResponseEntity<Territory> createTerritory(@RequestBody Territory territory) {
+    public ResponseEntity<TerritoryDTO> createTerritory(@RequestBody Territory territory) {
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         try {
-            Territory createdTerritory = territoryService.createTerritory(territory);
+            TerritoryDTO createdTerritory = territoryService.createTerritory(territory, user.getUsername());
             return ResponseEntity.status(201).body(createdTerritory);
         } catch (EntityAlreadyExistsException e) {
             return ResponseEntity.badRequest().build();
@@ -33,10 +39,13 @@ public class TerritoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Territory> updateTerritory(@PathVariable Long id, @RequestBody Territory territory) {
-        Optional<Territory> existingTerritory = territoryService.getTerritoryById(id);
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Territory> existingTerritory = territoryService.getTerritoryById(id, user.getUsername());
         if (existingTerritory.isPresent()) {
             territory.setTerritoryId(id);
-            Territory updatedTerritory = territoryService.updateTerritory(territory);
+            Territory updatedTerritory = territoryService.updateTerritory(territory, user.getUsername());
             return ResponseEntity.ok(updatedTerritory);
         }else{
             return ResponseEntity.notFound().build();
@@ -45,13 +54,15 @@ public class TerritoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTerritory(@PathVariable Long id) {
-        territoryService.deleteTerritory(id);
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        territoryService.deleteTerritory(id, user.getUsername());
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Territory> getTerritoryById(@PathVariable Long id) {
-        Optional<Territory> territory = territoryService.getTerritoryById(id);
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Territory> territory = territoryService.getTerritoryById(id, user.getUsername());
         return territory.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
