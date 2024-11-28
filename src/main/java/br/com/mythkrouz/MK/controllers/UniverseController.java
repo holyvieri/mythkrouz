@@ -1,11 +1,16 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.dto.UpdateUniverseDTO;
 import br.com.mythkrouz.MK.entities.Universe;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.services.UniverseService;
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,10 +27,13 @@ public class UniverseController {
         this.universeService = universeService;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Universe> createUniverse(@RequestBody Universe universe) {
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         try {
-            Universe createdUniverse = universeService.createUniverse(universe);
+            Universe createdUniverse = universeService.createUniverse(universe, user.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUniverse);
         } catch (EntityAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
@@ -33,9 +41,14 @@ public class UniverseController {
     }
 
     @PutMapping("/{universeId}")
-    public ResponseEntity<Universe> updateUniverse(@PathVariable Long universeId, @RequestBody Universe universe) {
-        universe.setUniverseId(universeId); //boa pratica
-        Universe updatedUniverse = universeService.updateUniverse(universe);
+    public ResponseEntity<Universe> updateUniverse(@PathVariable Long universeId,
+                                                   @RequestBody UpdateUniverseDTO universe){
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Universe updatedUniverse = universeService.updateUniverse(universe, universeId, user.getUsername());
+
+        //boa pratica
         if (updatedUniverse != null) {
             return ResponseEntity.ok(updatedUniverse);
         } else {
@@ -45,13 +58,20 @@ public class UniverseController {
 
     @DeleteMapping("/{universeId}")
     public ResponseEntity<Void> deleteUniverse(@PathVariable Long universeId) {
-        universeService.deleteUniverse(universeId);
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        universeService.deleteUniverse(universeId, user.getUsername());
+
         return ResponseEntity.noContent().build(); //no content vai ser justamente oq a gnt quer afirmar
     }
 
     @GetMapping("/{universeId}")
     public ResponseEntity<Universe> getUniverseById(@PathVariable Long universeId) {
-        Optional<Universe> universe = universeService.getUniverseById(universeId);
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Universe> universe = universeService.getUniverseById(universeId, user.getUsername());
+
         return universe.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
