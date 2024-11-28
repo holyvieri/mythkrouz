@@ -1,6 +1,7 @@
 package br.com.mythkrouz.MK.services.impl;
 
 
+import br.com.mythkrouz.MK.dto.UserDTO;
 import br.com.mythkrouz.MK.entities.User;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.repositories.UserRepository;
@@ -50,6 +51,10 @@ public class UserServiceImpl implements UserService {
     public User updateUser(User user) {
         Optional<User> existingUser = userRepository.findById(user.getUserId());
         if (existingUser.isPresent()) {
+
+            String senha_cripto = this.passwordEncoder.encode(user.getPassword());
+            user.setPassword(senha_cripto);
+
             return userRepository.save(user);
         }else{
             throw new EntityNotFoundException("O Usuário de email: "+user.getEmail()+" não foi encontrado.");

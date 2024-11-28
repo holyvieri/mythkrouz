@@ -37,15 +37,16 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        try{
-            userService.deleteUser_UserId(id);
-            return ResponseEntity.ok().build();
-        }catch (EntityNotFoundException e){
-            return ResponseEntity.notFound().build();
-        }
-    }
+    //ESSE MÉTODO É PARA O FUTURO -> ROLE ADM
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+//        try{
+//            userService.deleteUser_UserId(id);
+//            return ResponseEntity.ok().build();
+//        }catch (EntityNotFoundException e){
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
