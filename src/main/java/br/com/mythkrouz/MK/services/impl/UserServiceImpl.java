@@ -8,6 +8,7 @@ import br.com.mythkrouz.MK.services.UserService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Transactional
     @Override
     public User createUser(User user) throws EntityAlreadyExistsException {
@@ -34,6 +38,9 @@ public class UserServiceImpl implements UserService {
         if (existingUser.isPresent()) {
             throw new EntityAlreadyExistsException("Usuário");
         }
+
+        String senha_cripto = this.passwordEncoder.encode(user.getPassword());
+        user.setPassword(senha_cripto);
 
         return userRepository.save(user);
     }
