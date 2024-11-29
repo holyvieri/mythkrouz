@@ -1,6 +1,7 @@
 package br.com.mythkrouz.MK.services.impl;
 
 import br.com.mythkrouz.MK.dto.TerritoryDTO;
+import br.com.mythkrouz.MK.dto.UpdateTerritoryDTO;
 import br.com.mythkrouz.MK.entities.Territory;
 import br.com.mythkrouz.MK.entities.Universe;
 import br.com.mythkrouz.MK.entities.User;
@@ -67,17 +68,27 @@ public class TerritoryServiceImpl implements TerritoryService {
 
     @Transactional
     @Override
-    public Territory updateTerritory(Territory territory, String userEmail) {
+    public Territory updateTerritory(Long id, UpdateTerritoryDTO territory, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
         Long userId = user.getUserId();
 
-        Optional<Territory> existingTerritory = territoryRepository.findById(territory.getTerritoryId());
-        if (existingTerritory.isPresent()) {
-            return territoryRepository.save(territory);
-        }else{
-            throw new EntityNotFoundException("Território com ID" + territory.getTerritoryId() + " não encontrado.");
+        Territory existingTerritory = territoryRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("O Território de ID: " + id +
+                        " não foi encontrado."));
+
+        if (!userId.equals(existingTerritory.getUniverse().getCreator().getUserId())) {
+            throw new IllegalArgumentException("Usuário não autorizado a atualizar este território.");
         }
+
+        if (territory.name() != null){
+            existingTerritory.setName(territory.name());
+        }
+        if (territory.description() != null){
+            existingTerritory.setDescription(territory.description());
+        }
+
+        return territoryRepository.save(existingTerritory);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package br.com.mythkrouz.MK.controllers;
 
 import br.com.mythkrouz.MK.dto.TerritoryDTO;
+import br.com.mythkrouz.MK.dto.UpdateTerritoryDTO;
 import br.com.mythkrouz.MK.entities.Territory;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.services.TerritoryService;
@@ -38,14 +39,13 @@ public class TerritoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Territory> updateTerritory(@PathVariable Long id, @RequestBody Territory territory) {
+    public ResponseEntity<Territory> updateTerritory(@PathVariable Long id, @RequestBody UpdateTerritoryDTO territory) {
 
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Optional<Territory> existingTerritory = territoryService.getTerritoryById(id, user.getUsername());
-        if (existingTerritory.isPresent()) {
-            territory.setTerritoryId(id);
-            Territory updatedTerritory = territoryService.updateTerritory(territory, user.getUsername());
+        Territory updatedTerritory = territoryService.updateTerritory(id, territory, user.getUsername());
+
+        if (updatedTerritory != null) {
             return ResponseEntity.ok(updatedTerritory);
         }else{
             return ResponseEntity.notFound().build();
