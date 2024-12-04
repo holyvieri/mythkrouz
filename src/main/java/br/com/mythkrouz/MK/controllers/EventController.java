@@ -1,5 +1,6 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.dto.EventDTO;
 import br.com.mythkrouz.MK.entities.Character;
 import br.com.mythkrouz.MK.entities.Event;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
@@ -9,6 +10,8 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +32,10 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<Event> createEvent(@RequestBody Event event) {
+    public ResponseEntity<EventDTO> createEvent(@RequestBody Event event) {
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
-            Event createdEvent = eventService.createEvent(event);
+            EventDTO createdEvent = eventService.createEvent(event, user.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
         } catch (EntityAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
@@ -40,9 +44,10 @@ public class EventController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
-        event.setEventId(id);
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Event updatedEvent = eventService.updateEvent(id, event, user.getUsername());
         try {
-            Event updatedEvent = eventService.updateEvent(event);
             return ResponseEntity.ok(updatedEvent);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -51,26 +56,21 @@ public class EventController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Long id) {
-        try {
-            eventService.deleteEvent(id);
-            return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        eventService.deleteEvent(id, user.getUsername());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Event> getEventById(@PathVariable Long id) {
-        Optional<Event> event = eventService.getEventById(id);
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Event> event = eventService.getEventById(id, user.getUsername());
         return event.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping
     public ResponseEntity<List<Event>> getAllEvents() {
         List<Event> events = eventService.getAllEvents();
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(events);
     }
 
@@ -85,18 +85,12 @@ public class EventController {
     public ResponseEntity<List<Event>> getEventsByDate(@PathVariable String date) {
         LocalDate localDate = LocalDate.parse(date);
         List<Event> events = eventService.getAllEventsByDate(localDate);
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("/territory/{territoryId}")
     public ResponseEntity<List<Event>> getEventsByTerritoryId(@PathVariable Long territoryId) {
         List<Event> events = eventService.getAllEventsByTerritoryId(territoryId);
-        if (events.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
         return ResponseEntity.ok(events);
     }
 
