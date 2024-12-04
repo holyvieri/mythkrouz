@@ -93,12 +93,38 @@ public class TerritoryServiceImpl implements TerritoryService {
 
     @Override
     public void deleteTerritory(Long territoryId, String userEmail) {
-        territoryRepository.deleteById(territoryId);
+        Territory existingTerritory = territoryRepository.findById(territoryId)
+                .orElseThrow(() -> new EntityNotFoundException("Território de ID: " + territoryId + " não foi encontrado."));
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
+        Long userId = user.getUserId();
+
+        if (!userId.equals(existingTerritory.getUniverse().getCreator().getUserId())) {
+            throw new IllegalArgumentException("Usuário não autorizado a deletar este território.");
+        }
+
+        territoryRepository.delete(existingTerritory);
     }
 
     @Override
     public Optional<Territory> getTerritoryById(Long territoryId, String userEmail) {
-        return territoryRepository.findById(territoryId);
+
+        Optional<Territory> existingTerritory =  territoryRepository.findById(territoryId);
+
+        if (existingTerritory.isEmpty()){
+            return Optional.empty();
+        }
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
+        Long userId = user.getUserId();
+
+        if (!userId.equals(existingTerritory.get().getUniverse().getCreator().getUserId())) {
+            throw new IllegalArgumentException("Usuário não autorizado a deletar este território.");
+        }
+
+        return existingTerritory;
     }
 
     @Override
