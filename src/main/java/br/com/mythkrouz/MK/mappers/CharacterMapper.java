@@ -1,6 +1,8 @@
 package br.com.mythkrouz.MK.mappers;
 
 import br.com.mythkrouz.MK.dto.CharacterDTO;
+import br.com.mythkrouz.MK.dto.GetCharacterDTO;
+import br.com.mythkrouz.MK.dto.GetMinCharacterDTO;
 import br.com.mythkrouz.MK.entities.Character;
 
 import lombok.experimental.UtilityClass;
@@ -29,6 +31,38 @@ public class CharacterMapper {
                         .collect(Collectors.toList()) // coleta os resultados em uma lista
         );
     }
+
+    public static GetCharacterDTO toGetDTO(Character character) {
+        if (character == null) {
+            return null;
+        }
+
+        return new GetCharacterDTO(
+                character.getCharacterId(),
+                character.getName(),
+                character.getRace(),
+                character.getCharacterClass(),
+                character.getGender(),
+                character.getAge()
+        );
+    }
+
+    public static GetMinCharacterDTO toGetMinDTO(Character character) {
+        if (character == null) {
+            return null;
+        }
+
+        return new GetMinCharacterDTO(
+                character.getCharacterId(),
+                character.getName(),
+                character.getAge(),
+                character.getDescription()
+        );
+    }
+
+
+
+
 
     public static Character toEntity(CharacterDTO characterDTO) {
         if (characterDTO == null) {
