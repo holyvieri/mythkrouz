@@ -25,12 +25,12 @@ public class ItemController {
     }
 
     @PostMapping
-    public ResponseEntity<ItemDTO> createItem(@RequestBody Item item) {
+    public ResponseEntity<ItemDTO> createItem(@RequestBody ItemDTO itemDto) {
 
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         try {
-            ItemDTO createdItem = itemService.createItem(item, user.getUsername());
+            ItemDTO createdItem = itemService.createItem(itemDto, user.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED).body(createdItem);
         } catch (EntityAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(null);

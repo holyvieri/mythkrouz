@@ -41,16 +41,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Transactional
     @Override
-    public ItemDTO createItem(Item item, String userEmail) throws EntityAlreadyExistsException {
-        if (item.getName() == null || item.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do item não pode ser nulo ou vazio.");
-        }
+    public ItemDTO createItem(ItemDTO itemDto, String userEmail) throws EntityAlreadyExistsException {
 
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
         Long userId = user.getUserId();
 
-        Optional<Item> existingItem = itemRepository.findByName(item.getName());
+        Optional<Item> existingItem = itemRepository.findByName(itemDto.name());
         if (existingItem.isPresent()) {
             throw new EntityAlreadyExistsException("Item");
         }
@@ -60,7 +57,10 @@ public class ItemServiceImpl implements ItemService {
                     "própria criação.");
         }
 
-        Item savedItem = itemRepository.save(item);
+        Item savedItem = itemRepository.save(ItemMapper.toEntity(itemDto));
+        savedItem.setOrigin(existingItem.get().getOrigin());
+        savedItem.setOwners(existingItem.get().getOwners());
+
         return ItemMapper.toDTO(savedItem);
     }
 
