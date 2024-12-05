@@ -1,6 +1,9 @@
 package br.com.mythkrouz.MK.repositories;
 
 import br.com.mythkrouz.MK.entities.Character;
+import br.com.mythkrouz.MK.entities.enums.CharacterClass;
+import br.com.mythkrouz.MK.entities.enums.Gender;
+import br.com.mythkrouz.MK.entities.enums.Race;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,10 +21,10 @@ public interface CharacterRepository extends JpaRepository<br.com.mythkrouz.MK.e
     @Query("SELECT c FROM Character c WHERE c.name LIKE %:name%")
     public Optional<Character> findByName(@Param("name") String name);
 
-    public List<Character> findAllByRace(String race);
-    public List<Character> findAllByGender(String gender);
-    public List<Character> findAllByRaceAndGender(String race, String gender);
-    public List<Character> findAllByCharacterClass(String characterClass);
+    public List<Character> findAllByRace(Race race);
+    public List<Character> findAllByGender(Gender gender);
+    public List<Character> findAllByRaceAndGender(Race race, Gender gender);
+    public List<Character> findAllByCharacterClass(CharacterClass characterClass);
 
 
 

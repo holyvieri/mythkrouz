@@ -64,15 +64,18 @@ public class CharacterServiceImpl implements CharacterService {
         Territory territory = territoryRepository.findById(character.territoryId())
                 .orElseThrow(() -> new IllegalArgumentException("Território não encontrado."));
 
+//        System.out.println(territory);
         // Verificar se o universo do território está na lista de universos do usuário
         if (!userUniverseIds.contains(territory.getUniverse().getUniverseId())) {
             throw new IllegalArgumentException("O território do personagem não pertence ao usuário.");
         }
 
-        Character savedCharacter = characterRepository.save(CharacterMapper.toEntity(character));
+        // Cria a entidade Character com o território já associado
+        Character newCharacter = CharacterMapper.toEntity(character);
+        newCharacter.setTerritory(territory); // Associar o território antes de salvar
+        newCharacter.setEvents(eventRepository.findAllById(character.eventIds()));
 
-        savedCharacter.setTerritory(territory);
-        savedCharacter.setEvents(eventRepository.findAllById(character.eventIds()));
+        Character savedCharacter = characterRepository.save(newCharacter); // Salvar o personagem
 
         return CharacterMapper.toDTO(savedCharacter);
     }
@@ -84,10 +87,10 @@ public class CharacterServiceImpl implements CharacterService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
         Long userId = user.getUserId();
 
-
-        Character existingCharacter = characterRepository.findById(characterDto.characterId())
+        Character existingCharacter = characterRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("O Personagem de ID: " + id +
                         " não foi encontrado."));
+
 
         if (!userId.equals(existingCharacter.getTerritory().getUniverse().getCreator().getUserId())){
             throw new IllegalArgumentException("Usuário não autorizado a editar este personagem.");
@@ -220,7 +223,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<GetMinCharacterDTO> getAllCharactersByRace(String race) {
-        List<Character> characters = characterRepository.findAllByRace(race);
+        List<Character> characters = characterRepository.findAllByRace(Race.valueOf(race.toUpperCase()));
         return characters.stream()
                 .map(CharacterMapper::toGetMinDTO)
                 .collect(Collectors.toList());
@@ -228,7 +231,7 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<GetMinCharacterDTO> getAllCharactersByGender(String gender) {
-        List<Character> characters =characterRepository.findAllByGender(gender);
+        List<Character> characters =characterRepository.findAllByGender(Gender.valueOf(gender.toUpperCase()));
         return characters.stream()
                 .map(CharacterMapper::toGetMinDTO)
                 .collect(Collectors.toList());
@@ -236,7 +239,9 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<GetMinCharacterDTO> getAllCharactersByRaceAndGender(String race, String gender) {
-        List<Character> characters = characterRepository.findAllByRaceAndGender(race, gender);
+        List<Character> characters = characterRepository.findAllByRaceAndGender(
+                Race.valueOf(race.toUpperCase()),
+                Gender.valueOf(gender.toUpperCase()));
         return characters.stream()
                 .map(CharacterMapper::toGetMinDTO)
                 .collect(Collectors.toList());
@@ -244,7 +249,9 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<GetMinCharacterDTO> getAllCharactersByClass(String characterClass) {
-        List<Character> characters = characterRepository.findAllByCharacterClass(characterClass);
+        List<Character> characters = characterRepository.findAllByCharacterClass(
+                CharacterClass.valueOf(characterClass.toUpperCase())
+        );
         return characters.stream()
                 .map(CharacterMapper::toGetMinDTO)
                 .collect(Collectors.toList());
