@@ -48,6 +48,7 @@ public class RelationServiceImpl implements RelationService {
         Character character2 = characterRepository.findById(relationDto.character2Id())
                 .orElseThrow(() -> new EntityNotFoundException("Personagem com ID " + relationDto.character2Id() + " não encontrado."));
 
+
         // Verifica se a relação já existe no banco
         Optional<Relation> existingRelation = relationRepository.findByCharactersAndType(
                 character1.getCharacterId(),
@@ -55,14 +56,17 @@ public class RelationServiceImpl implements RelationService {
                 relationDto.relationType()
         );
 
-        if (!existingRelation.isEmpty()) {
+        if (existingRelation.isPresent()) {
             throw new EntityAlreadyExistsException("A relação entre os personagens já existe.");
         }
-        if (!userId.equals(existingRelation.get().getCharacter1().getTerritory().getUniverse().getCreator().getUserId()) &&
-                !userId.equals(existingRelation.get().getCharacter2().getTerritory().getUniverse().getCreator().getUserId())
-        ){
-            throw new IllegalArgumentException("Usuário não autorizado a editar este item.");
+
+        boolean isAuthorized = character1.getTerritory().getUniverse().getCreator().getUserId().equals(userId) ||
+                character2.getTerritory().getUniverse().getCreator().getUserId().equals(userId);
+
+        if (!isAuthorized) {
+            throw new IllegalArgumentException("Usuário não autorizado a criar esta relação.");
         }
+
 
             // Cria uma nova relação
         Relation relation = new Relation();

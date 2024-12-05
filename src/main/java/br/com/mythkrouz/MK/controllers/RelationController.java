@@ -82,7 +82,7 @@ public class RelationController {
         return ResponseEntity.ok(relations);
     }
 
-    @GetMapping("/relations")
+    @GetMapping("/type")
     public ResponseEntity<List<RelationDTO>> getAllRelationsByRelationType(@RequestParam RelationType relationType) {
         List<RelationDTO> relations = relationService.getAllRelationsByRelationType(relationType);
         return ResponseEntity.ok(relations);
