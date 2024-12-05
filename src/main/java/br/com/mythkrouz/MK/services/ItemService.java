@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ItemService {
-    public ItemDTO createItem(Item item, String userEmail) throws EntityAlreadyExistsException;
+    public ItemDTO createItem(ItemDTO item, String userEmail) throws EntityAlreadyExistsException;
     public ItemDTO updateItem(Long id, ItemDTO item, String userEmail);
     public void deleteItem(Long itemId, String userEmail);
     public Optional<Item> getItemById(Long itemId, String userEmail);

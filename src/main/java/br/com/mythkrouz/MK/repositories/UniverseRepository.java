@@ -14,6 +14,7 @@ import java.util.Optional;
 public interface UniverseRepository extends JpaRepository<Universe, Long> {
 
     public List<Universe> findAllByCreator_UserId(Long creatorId);
+
     @Query("SELECT u FROM Universe u WHERE u.name LIKE %:name%")
     public Optional<Universe> findByName(@Param("name") String name);
 
