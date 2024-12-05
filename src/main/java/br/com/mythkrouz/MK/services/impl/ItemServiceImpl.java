@@ -28,15 +28,16 @@ public class ItemServiceImpl implements ItemService {
 
     private final TerritoryRepository territoryRepository;
     private final CharacterRepository characterRepository;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     //usar o autowired no construtor vai facilitar ao explicitar p testes unitarios
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, TerritoryRepository territoryRepository, CharacterRepository characterRepository) {
+    public ItemServiceImpl(ItemRepository itemRepository, TerritoryRepository territoryRepository, CharacterRepository characterRepository, UserRepository userRepository) {
         this.itemRepository = itemRepository;
         this.territoryRepository = territoryRepository;
         this.characterRepository = characterRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -52,14 +53,18 @@ public class ItemServiceImpl implements ItemService {
             throw new EntityAlreadyExistsException("Item");
         }
 
-        if (!userId.equals(existingItem.get().getOrigin().getUniverse().getCreator().getUserId())) {
-            throw new IllegalArgumentException("O usuário não pode criar um item cuja origem não seja de sua " +
-                    "própria criação.");
+        boolean isAuthorized = territoryRepository.findById(itemDto.territoryId()).get().getUniverse()
+                .getCreator().getUserId().equals(userId);
+
+        if (!isAuthorized){
+            throw new IllegalArgumentException("Usuário não autorizado a criar este item.");
         }
 
-        Item savedItem = itemRepository.save(ItemMapper.toEntity(itemDto));
-        savedItem.setOrigin(existingItem.get().getOrigin());
-        savedItem.setOwners(existingItem.get().getOwners());
+        Item newItem = ItemMapper.toEntity(itemDto);
+        newItem.setOrigin(territoryRepository.findById(itemDto.territoryId()).get());
+        newItem.setOwners(characterRepository.findAllById(itemDto.ownerIds()));
+
+        Item savedItem = itemRepository.save(newItem);
 
         return ItemMapper.toDTO(savedItem);
     }
