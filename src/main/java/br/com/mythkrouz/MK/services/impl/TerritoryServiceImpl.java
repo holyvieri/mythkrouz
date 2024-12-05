@@ -104,7 +104,7 @@ public class TerritoryServiceImpl implements TerritoryService {
             throw new IllegalArgumentException("Usuário não autorizado a deletar este território.");
         }
 
-        territoryRepository.delete(existingTerritory);
+        territoryRepository.deleteById(territoryId);
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TerritoryServiceImpl implements TerritoryService {
         Long userId = user.getUserId();
 
         if (!userId.equals(existingTerritory.get().getUniverse().getCreator().getUserId())) {
-            throw new IllegalArgumentException("Usuário não autorizado a deletar este território.");
+            throw new IllegalArgumentException("Usuário não autorizado a acessar este território.");
         }
 
         return existingTerritory;
