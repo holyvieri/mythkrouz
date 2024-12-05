@@ -8,6 +8,7 @@ import br.com.mythkrouz.MK.entities.User;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.mappers.EventMapper;
 import br.com.mythkrouz.MK.repositories.EventRepository;
+import br.com.mythkrouz.MK.repositories.TerritoryRepository;
 import br.com.mythkrouz.MK.repositories.UniverseRepository;
 import br.com.mythkrouz.MK.repositories.UserRepository;
 import br.com.mythkrouz.MK.services.EventService;
@@ -27,27 +28,25 @@ public class EventServiceImpl implements EventService {
     private final EventRepository eventRepository;
     private final UniverseRepository universeRepository;
     private final UserRepository userRepository;
+    private final TerritoryRepository territoryRepository;
 
     @Autowired
-    public EventServiceImpl(EventRepository eventRepository, UniverseRepository universeRepository, UserRepository userRepository) {
+    public EventServiceImpl(EventRepository eventRepository, UniverseRepository universeRepository, UserRepository userRepository, TerritoryRepository territoryRepository) {
         this.eventRepository = eventRepository;
         this.universeRepository = universeRepository;
         this.userRepository = userRepository;
+        this.territoryRepository = territoryRepository;
     }
 
     @Transactional
     @Override
-    public EventDTO createEvent(Event event, String userEmail) throws EntityAlreadyExistsException {
-        if (event.getName() == null || event.getName().trim().isEmpty()) {
-            throw new IllegalArgumentException("O nome do Evento não pode ser nulo ou vazio.");
-        }
+    public EventDTO createEvent(EventDTO eventDto, String userEmail) throws EntityAlreadyExistsException {
 
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
         Long userId = user.getUserId();
 
-
-        Optional<Event> existingEvent = eventRepository.findByName(event.getName());
+        Optional<Event> existingEvent = eventRepository.findByName(eventDto.name());
         if (existingEvent.isPresent()) {
             throw new EntityAlreadyExistsException("Evento");
         }
@@ -58,25 +57,35 @@ public class EventServiceImpl implements EventService {
                 .toList();
 
         //ids dos universos referenciados pelos territorios que estao a ser setados
-        List<Long> territoriesUniversesId = event.getTerritory().stream()
+        List<Territory> territories = territoryRepository.findAllById(eventDto.territoryIds());
+//        System.out.println(territories);
+        List<Long> territoriesUniversesId = territories.stream()
                 .map(territory -> territory.getUniverse().getUniverseId())
                 .toList();
+
 
         //checar agr se todos os ids universe dos territorios selecionados de fato estao dentro da lista de ids do user
         boolean isValid = territoriesUniversesId.stream()
                         .allMatch(userUniverseIds::contains);
 
+
         if (!isValid) {
             throw new IllegalArgumentException("Um ou mais territórios não são pertencentes ao usuário.");
         }
 
-        Event savedEvent = eventRepository.save(event);
+        Event savedEvent = eventRepository.save(EventMapper.toEntity(eventDto));
+        savedEvent.setTerritory(territories);
+
+        savedEvent.getTerritory().stream()
+                .map(Territory::getTerritoryId)
+                .forEach(System.out::println);
+
         return EventMapper.toDTO(savedEvent);
     }
 
     @Transactional
     @Override
-    public Event updateEvent(Long id, Event event, String userEmail) {
+    public Event updateEvent(Long id, EventDTO event, String userEmail) {
 
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com email " + userEmail + " não encontrado."));
@@ -94,10 +103,20 @@ public class EventServiceImpl implements EventService {
             throw new IllegalArgumentException("Usuário não autorizado a editar este território");
         }
 
-        existingEvent.setName(event.getName());
-        existingEvent.setDescription(event.getDescription());
-        existingEvent.setDate(event.getDate());
-        existingEvent.setTerritory(event.getTerritory());
+
+        if (event.name() != null && !event.name().trim().isEmpty()) {
+            existingEvent.setName(event.name());
+        }
+
+        if (event.description() != null && !event.description().trim().isEmpty()) {
+            existingEvent.setDescription(event.description());
+        }
+
+        if (event.date() != null) {
+            existingEvent.setDate(event.date());
+        }
+
+        existingEvent.setTerritory(territoryRepository.findAllById(event.territoryIds()));
 
         return eventRepository.save(existingEvent);
     }

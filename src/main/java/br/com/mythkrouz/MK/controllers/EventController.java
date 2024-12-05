@@ -32,7 +32,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<EventDTO> createEvent(@RequestBody Event event) {
+    public ResponseEntity<EventDTO> createEvent(@RequestBody EventDTO event) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         try {
             EventDTO createdEvent = eventService.createEvent(event, user.getUsername());
@@ -43,7 +43,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody Event event) {
+    public ResponseEntity<Event> updateEvent(@PathVariable Long id, @RequestBody EventDTO event) {
         UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         Event updatedEvent = eventService.updateEvent(id, event, user.getUsername());
@@ -93,7 +93,6 @@ public class EventController {
         List<Event> events = eventService.getAllEventsByTerritoryId(territoryId);
         return ResponseEntity.ok(events);
     }
-
 
 
 }

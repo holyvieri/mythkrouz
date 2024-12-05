@@ -2,6 +2,7 @@ package br.com.mythkrouz.MK.mappers;
 
 import br.com.mythkrouz.MK.dto.EventDTO;
 import br.com.mythkrouz.MK.entities.Event;
+import br.com.mythkrouz.MK.entities.Territory;
 import lombok.experimental.UtilityClass;
 
 import java.util.stream.Collectors;
@@ -20,7 +21,7 @@ public class EventMapper {
                 event.getDescription(),
                 event.getDate(),
                 event.getTerritory().stream()
-                        .map(territory -> territory.getTerritoryId())
+                        .map(Territory::getTerritoryId)
                         .collect(Collectors.toList())
         );
     }
@@ -35,6 +36,7 @@ public class EventMapper {
         event.setName(eventDTO.name());
         event.setDescription(eventDTO.description());
         event.setDate(eventDTO.date());
+
 
         //TODO: territoryid no service
 
