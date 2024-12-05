@@ -1,11 +1,15 @@
 package br.com.mythkrouz.MK.controllers;
 
+import br.com.mythkrouz.MK.dto.RelationDTO;
 import br.com.mythkrouz.MK.entities.Relation;
+import br.com.mythkrouz.MK.entities.enums.RelationType;
 import br.com.mythkrouz.MK.exceptions.EntityAlreadyExistsException;
 import br.com.mythkrouz.MK.services.RelationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,53 +26,67 @@ public class RelationController {
     }
 
     @PostMapping
-    public ResponseEntity<Relation> createRelation(@RequestBody Relation relation) {
+    public ResponseEntity<RelationDTO> createRelation(@RequestBody RelationDTO relation) {
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         try {
-            Relation createdRelation = relationService.createRelation(relation);
+            RelationDTO createdRelation = relationService.createRelation(relation, user.getUsername());
             // o diamante a partir do java 7 ja detecta o T automaticamente, é a msma coisa de declarar la dentro
-            return new ResponseEntity<>(createdRelation, HttpStatus.CREATED);
+            return ResponseEntity.status(201).body(createdRelation);
         } catch (EntityAlreadyExistsException e) {
-            return new ResponseEntity<>(null, HttpStatus.CONFLICT);
+            return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Relation> updateRelation(@PathVariable Long id, @RequestBody Relation relation) {
-        Optional<Relation> existingRelation = relationService.getRelationById(id);
-        if (existingRelation.isPresent()) {
-            relation.setRelationId(id);
-            Relation updatedRelation = relationService.updateRelation(relation);
-            return new ResponseEntity<>(updatedRelation, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<RelationDTO> updateRelation(@PathVariable Long id, @RequestBody RelationDTO relation) {
+
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        RelationDTO updatedRelation = relationService.updateRelation(id, relation, user.getUsername());
+        if (updatedRelation != null) {
+            return ResponseEntity.ok(updatedRelation);
+        }else{
+            return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteRelation(@PathVariable Long id) {
-        relationService.deleteRelation(id);
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        relationService.deleteRelation(id, user.getUsername());
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Relation> getRelationById(@PathVariable Long id) {
-        Optional<Relation> relation = relationService.getRelationById(id);
-        return relation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        UserDetails user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Optional<Relation> relation = relationService.getRelationById(id, user.getUsername());
+        return relation.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
 
     @GetMapping
-    public ResponseEntity<List<Relation>> getAllRelations() {
-        List<Relation> relations = relationService.getAllRelations();
-        return new ResponseEntity<>(relations, HttpStatus.OK);
+    public ResponseEntity<List<RelationDTO>> getAllRelations() {
+        List<RelationDTO> relations = relationService.getAllRelations();
+        return ResponseEntity.ok(relations);
+
     }
 
     @GetMapping("/character/{characterId}")
-    public ResponseEntity<List<Relation>> getRelationsByCharacterId(@PathVariable Long characterId) {
-        List<Relation> relations = relationService.getAllRelationsByCharacterId(characterId);
-        return new ResponseEntity<>(relations, HttpStatus.OK);
+    public ResponseEntity<List<RelationDTO>> getRelationsByCharacterId(@PathVariable Long characterId) {
+        List<RelationDTO> relations = relationService.getAllRelationsByCharacterId(characterId);
+        return ResponseEntity.ok(relations);
     }
 
+    @GetMapping("/relations")
+    public ResponseEntity<List<RelationDTO>> getAllRelationsByRelationType(@RequestParam RelationType relationType) {
+        List<RelationDTO> relations = relationService.getAllRelationsByRelationType(relationType);
+        return ResponseEntity.ok(relations);
+    }
 
 
 
